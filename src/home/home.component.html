@@ -1,0 +1,117 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>Result API BreweryDB</h1>
+
+            <div id="mainBeer" class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                        <a href="/beer/{{ mainBeer.id }}" target="_blank">
+                            <img src="{{ mainBeer.labels.medium }}" alt="{{ mainBeer.name }}"
+                                 class="img-thumbnail">
+                        </a>
+                    </div>
+                    <div class="col-lg-5">
+                        <h2>{{ mainBeer.name }}</h2>
+                        <p>
+                            {{ mainBeer.description }}
+                        </p>
+
+
+                        <div ng-repeat="brewerie in mainBeer.breweries track by brewerie.id">
+                            <h5>More about the brewery</h5>
+                            <ul>
+                                <li>
+                                    <label>Brewery</label>: {{brewerie.name}}
+                                </li>
+                                <li>
+                                    <label>Website</label>: <a href="{{brewerie.website}}" target="_blank">
+                                    {{brewerie.website}}
+                                </a>
+                                </li>
+                                <li ng-show="brewerie.established">
+                                    <label>Established</label>: {{brewerie.established}}
+                                </li>
+                            </ul>
+                            <button type="button" ng-click="home.moreBeerBrewery(brewerie.id)"
+                                    class="btn btn-xs btn-info">More beers this brewery
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="center-block">
+                            <button type="button" ng-click="home.searchBeers()" class="btn btn-primary btn-block">
+                                Another Beer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Search</h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="navbar-form" role="search" ng-submit="home.formBeer(dataForm)">
+                        <div class="input-group stylish-input-group">
+                            <input type="text" class="form-control" placeholder="Search" ng-model="dataForm.name"
+                                   pattern="^[\w\d\.\- ]+$" required>
+                            <span class="input-group-addon">
+                                <button>
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <div class="radio">
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" ng-model="dataForm.type" value="1"> Beer
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" ng-model="dataForm.type" value="2" required> Breweries
+                                </label>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-sm btn-primary" value="search">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIST -->
+    <div class="row">
+        <div id="beerList" class="col-lg-12">
+            <h2>Search Results</h2>
+            <table class="table table-bordered table-condensed table-striped">
+                <tbody>
+                <tr ng-repeat="beer in beers | filter:dataForm.name track by beer.id ">
+                    <td>
+                        <div class="col-lg-1">
+                            <img src="{{ beer.labels.icon }}" alt="{{ beer.name }}"
+                                 class="img-thumbnail">
+                        </div>
+                        <div class="col-lg-11">
+                            <h4>{{ beer.name }}</h4>
+
+                            <p>Alcohol By Volume: {{ beer.style.abvMax }}%</p>
+                            <p>
+                                <small ng-repeat="brewerie in beer.breweries track by brewerie.id">
+                                    By: {{brewerie.name}}
+                                </small>
+                            </p>
+                            <button ng-click="home.moreBeer(beer.id)" class="btn btn-sm btn-xs">
+                                Read More
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
